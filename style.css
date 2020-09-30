@@ -1,0 +1,59 @@
+/*
+ * Copyright (c) 2020 Bowser65
+ * Licensed under the Open Software License version 3.0
+ */
+
+.toprole-wrapper.role {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  bottom: -1px;
+}
+
+.members-1998pB .toprole-wrapper.role {
+  margin-bottom: 3px;
+}
+
+.toprole-wrapper.role > div {
+  user-select: none;
+  margin-bottom: 0;
+  margin-left: 4px;
+  max-width: fit-content;
+  z-index: 0;
+}
+
+.toprole-wrapper.role > div > div:first-of-type {
+  flex-shrink: 0;
+}
+
+.toprole-wrapper.role + .name-uJV0GL {
+  margin-bottom: -1px;
+}
+
+.theme-dark .toprole-wrapper.role {
+  color: hsla(0, 0%, 100%, .8);
+}
+
+.theme-light .toprole-wrapper.role {
+  color: #000;
+}
+
+.toprole-wrapper.tag {
+  flex-shrink: initial;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.toprole-wrapper.tag div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.members-1998pB .toprole-wrapper.tag {
+  margin-left: 5px;
+}
+
+.tre-adjust {
+  position: relative;
+  top: -2px;
+}
