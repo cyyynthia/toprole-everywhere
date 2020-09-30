@@ -3,10 +3,17 @@
  * Licensed under the Open Software License version 3.0
  */
 
-const { React, getModuleByDisplayName } = require('powercord/webpack');
+const { React, getModule, getModuleByDisplayName } = require('powercord/webpack');
 const { AsyncComponent } = require('powercord/components');
+const { sleep } = require('powercord/util');
 
 module.exports = AsyncComponent.from((async () => {
+  // Yes
+  const userStore = await getModule([ 'getCurrentUser' ]);
+  while (!userStore.getCurrentUser()) {
+    await sleep(10);
+  }
+
   const functionalUserPopout = await getModuleByDisplayName('UserPopout');
 
   // React Honks moment
