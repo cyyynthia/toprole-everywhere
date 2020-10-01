@@ -15,6 +15,7 @@
 }
 
 .toprole-wrapper.role > div {
+  overflow: hidden;
   user-select: none;
   margin-bottom: 0;
   margin-left: 4px;
