@@ -35,7 +35,7 @@ module.exports = class TopRoles extends Plugin {
     const channels = await getModule([ 'getChannel' ]);
     const MessageTimestamp = await getModule([ 'MessageTimestamp' ]);
     inject('tre-messages', MessageTimestamp, 'default', ([ { message: { author: { id: userId }, channel_id: channelId } } ], res) => {
-      if (!this.settings.get('messages', true)) {
+      if (!this.settings.get('messages', true) || !channelId) {
         return res;
       }
 
