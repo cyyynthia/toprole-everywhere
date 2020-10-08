@@ -39,16 +39,15 @@ module.exports = class TopRoles extends Plugin {
         return res;
       }
 
-      const header = findInReactTree(res, e => Array.isArray(e) && e.length >= 4 && e.find(c => c?.props?.renderPopout));
-      const index = header.indexOf(header.find(c => c?.props?.renderPopout));
+      const header = findInReactTree(res, e => Array.isArray(e.props?.children) && e.props.children.find(c => c.props?.message));
       const guildId = channels.getChannel(channelId).guild_id;
-
-      header.splice(index + 1, 0, React.createElement(TopRole, {
+      header.props.children.push(React.createElement(TopRole, {
         region: 'messages',
         entityId: this.entityID,
         guildId,
         userId
       }));
+
       return res;
     });
   }
