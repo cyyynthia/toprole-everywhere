@@ -51,7 +51,8 @@ module.exports = AsyncComponent.from((async () => {
     .prototype.renderRoles.call({ props: fakeProps })[1].type
     .prototype.render.call({ memoizedGetStateFromStores: () => void 0 }).type
     .prototype.render.call({ props: fakeProps }).type
-    .call(null, fakeProps).props.children[0].type;
+    .call(null, fakeProps).props.children.props.children({})
+    .props.children[0].type;
 
   // React Hooks moment
   owo.useMemo = ogUseMemo;
