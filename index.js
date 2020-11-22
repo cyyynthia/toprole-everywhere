@@ -3,7 +3,7 @@
  * Licensed under the Open Software License version 3.0
  */
 
-const { React, getModule, getModuleByDisplayName } = require('powercord/webpack');
+const { React, getModule, getAllModules, getModuleByDisplayName } = require('powercord/webpack');
 const { findInReactTree } = require('powercord/util');
 const { inject, uninject } = require('powercord/injector');
 const { Plugin } = require('powercord/entities');
@@ -39,7 +39,7 @@ module.exports = class TopRoles extends Plugin {
         return res;
       }
 
-      const header = findInReactTree(res, e => Array.isArray(e.props?.children) && e.props.children.find(c => c.props?.message));
+      const header = findInReactTree(res, e => Array.isArray(e?.props?.children) && e.props.children.find(c => c?.props?.message));
       const guildId = channels.getChannel(channelId).guild_id;
       header.props.children.push(React.createElement(TopRole, {
         region: 'messages',
@@ -56,12 +56,13 @@ module.exports = class TopRoles extends Plugin {
     const _this = this;
     const { getMember } = await getModule([ 'getMember' ]);
     const MemberListItem = await getModuleByDisplayName('MemberListItem');
-    inject('tre-members', MemberListItem.prototype, 'renderDecorators', function (_, res) {
+
+    inject('tre-members', MemberListItem.prototype, 'render', function (_, res) {
       if (!_this.settings.get('members', true)) {
         return res;
       }
 
-      res.props.children.push(
+      res.props.decorators.props.children.push(
         React.createElement(TopRole, {
           region: 'members',
           entityId: _this.entityID,
@@ -69,13 +70,6 @@ module.exports = class TopRoles extends Plugin {
           userId: this.props.user.id
         })
       );
-      return res;
-    });
-
-    inject('tre-members-adjust', MemberListItem.prototype, 'renderActivity', function (_, res) {
-      if (!_this.settings.get('members', true)) {
-        return res;
-      }
 
       if (getMember(this.props.guildId, this.props.user.id)?.roles?.length > 0) {
         res.props.className += ' tre-adjust';
