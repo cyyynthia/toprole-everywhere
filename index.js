@@ -56,33 +56,34 @@ module.exports = class TopRoles extends Plugin {
   async injectChat () {
     const channels = await getModule([ 'getChannel' ]);
     const MessageTimestamp = await getModule([ 'MessageTimestamp' ]);
-    inject('tre-messages', MessageTimestamp, 'default', ([ { message: { author: { id: userId }, channel_id: channelId } } ], res) => {
+    inject('tre-messages', MessageTimestamp, 'default', ([ { message: { id: msgId, author: { id: userId }, channel_id: channelId } } ], res) => {
       if (!this.settings.get('messages', true) || !channelId) {
         return res;
       }
 
       const header = findInReactTree(res, e => Array.isArray(e?.props?.children) && e.props.children.find(c => c?.props?.message));
-      const replyTo = findInReactTree(res, e => e?.props?.children?.props?.message);
+      const replyTo = findInReactTree(res, e => Array.isArray(e) && e.find(i => i?.props?.children?.props?.message));
 
       const guildId = channels.getChannel(channelId).guild_id;
-      header.props.children.push(React.createElement(TopRole, {
-        region: 'messages',
-        entityId: this.entityID,
-        guildId,
-        userId
-      }));
+      header.props.children.push(
+        React.createElement(TopRole, {
+          region: 'messages',
+          entityId: this.entityID,
+          guildId,
+          userId
+        })
+      );
 
-      if (replyTo && replyTo.props.children.props.message.author) {
-        const child = replyTo.props.children
-        replyTo.props.children = [
-          child,
+      if (replyTo) {
+        const { message } = findInReactTree(replyTo, n => n.message && n.message.id !== msgId)
+        replyTo.push(
           React.createElement(TopRole, {
             region: 'messages',
             entityId: this.entityID,
-            userId: replyTo.props.children.props.message.author.id,
+            userId: message.author.id,
             guildId
           })
-        ]
+        )
       }
 
       return res;
