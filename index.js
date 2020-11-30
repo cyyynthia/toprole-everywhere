@@ -62,6 +62,8 @@ module.exports = class TopRoles extends Plugin {
       }
 
       const header = findInReactTree(res, e => Array.isArray(e?.props?.children) && e.props.children.find(c => c?.props?.message));
+      const replyTo = findInReactTree(res, e => e?.props?.children?.props?.message);
+
       const guildId = channels.getChannel(channelId).guild_id;
       header.props.children.push(React.createElement(TopRole, {
         region: 'messages',
@@ -69,6 +71,19 @@ module.exports = class TopRoles extends Plugin {
         guildId,
         userId
       }));
+
+      if (replyTo && replyTo.props.children.props.message.author) {
+        const child = replyTo.props.children
+        replyTo.props.children = [
+          child,
+          React.createElement(TopRole, {
+            region: 'messages',
+            entityId: this.entityID,
+            userId: replyTo.props.children.props.message.author.id,
+            guildId
+          })
+        ]
+      }
 
       return res;
     });
@@ -80,7 +95,7 @@ module.exports = class TopRoles extends Plugin {
     const MemberListItem = await getModuleByDisplayName('MemberListItem');
 
     inject('tre-members', MemberListItem.prototype, 'render', function (_, res) {
-      if (!_this.settings.get('members', true)) {
+      if (!_this.settings.get('members', true) || !res.type.render) {
         return res;
       }
 
