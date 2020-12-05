@@ -44,9 +44,9 @@ const TopRole = React.memo(
 
     if (props.displayMode === 'role') {
       return (
-        <span className='toprole-wrapper role'>
+        <div className='toprole-wrapper role'>
           <MemberRole role={props.role}/>
-        </span>
+        </div>
       );
     }
 

@@ -86,5 +86,9 @@ module.exports = AsyncComponent.from((async () => {
   owo.useRef = ogUseRef;
 
   // Poggers moment
-  return MemberRole;
+  return function (props) {
+    const res = React.createElement(MemberRole, props).type.render(props)
+    delete res.props.children.props['data-list-item-id']
+    return res
+  };
 })());

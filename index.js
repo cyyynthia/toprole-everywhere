@@ -55,15 +55,13 @@ module.exports = class TopRoles extends Plugin {
 
   async injectChat () {
     const channels = await getModule([ 'getChannel' ]);
-    const MessageTimestamp = await getModule([ 'MessageTimestamp' ]);
-    inject('tre-messages', MessageTimestamp, 'default', ([ { message: { id: msgId, author: { id: userId }, channel_id: channelId } } ], res) => {
+    const MessageHeader = await getModule([ 'MessageTimestamp' ]);
+    inject('tre-messages', MessageHeader, 'default', ([ { message: { author: { id: userId }, channel_id: channelId } } ], res) => {
       if (!this.settings.get('messages', true) || !channelId) {
         return res;
       }
 
       const header = findInReactTree(res, e => Array.isArray(e?.props?.children) && e.props.children.find(c => c?.props?.message));
-      const replyTo = findInReactTree(res, e => Array.isArray(e) && e.find(i => i?.props?.children?.props?.message));
-
       const guildId = channels.getChannel(channelId).guild_id;
       header.props.children.push(
         React.createElement(TopRole, {
@@ -73,18 +71,6 @@ module.exports = class TopRoles extends Plugin {
           userId
         })
       );
-
-      if (replyTo) {
-        const { message } = findInReactTree(replyTo, n => n.message && n.message.id !== msgId)
-        replyTo.push(
-          React.createElement(TopRole, {
-            region: 'messages',
-            entityId: this.entityID,
-            userId: message.author.id,
-            guildId
-          })
-        )
-      }
 
       return res;
     });
