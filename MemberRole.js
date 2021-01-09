@@ -36,7 +36,7 @@ module.exports = AsyncComponent.from((async () => {
     await sleep(10);
   }
 
-  const functionalUserPopout = await getModuleByDisplayName('UserPopout');
+  const functionalUserPopout = await getModuleByDisplayName('ConnectedUserPopout');
 
   // React Honks moment
   const owo = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.current;
