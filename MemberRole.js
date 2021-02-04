@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Cynthia K. Rey, All rights reserved.
+ * Copyright (c) 2020-2021 Cynthia K. Rey, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -70,9 +70,7 @@ module.exports = AsyncComponent.from((async () => {
   };
 
   const MemberRole = functionalUserPopout({ user: { isNonUserBot: () => void 0 } }).type
-    .prototype.renderRoles.call({ props: fakeProps })[1].type
-    .prototype.render.call({ memoizedGetStateFromStores: () => void 0 }).type
-    .prototype.render.call({ props: fakeProps }).type
+    .prototype.renderRoles.call({ props: fakeProps })[1].type(fakeProps).type
     .call(null, fakeProps).props.children.props.children({})
     .props.children[0].type;
 

@@ -1,7 +1,7 @@
 {
   "name": "Top Roles Everywhere",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Shows user's highest roles in chat and in member list, customizable to your likings.",
-  "author": "Bowser65",
+  "author": "Cynthia",
   "license": "BSD-3-Clause"
 }
