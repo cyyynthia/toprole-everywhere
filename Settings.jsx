@@ -37,7 +37,7 @@ module.exports = React.memo(
         options={[
           {
             name: 'Role',
-            desc: 'Displays as a role in user popout.',
+            desc: 'Displays roles like they are displayed in user popouts.',
             value: 'role'
           },
           {
@@ -62,6 +62,13 @@ module.exports = React.memo(
         note='Whether the top role should be displayed in the members list or not.'
       >
         Members
+      </SwitchItem>
+      <SwitchItem
+        value={props.getSetting('replies', true)}
+        onChange={() => props.toggleSetting('replies', true)}
+        note='Whether the top role should be displayed in the replied message reference or not.'
+      >
+        Replies
       </SwitchItem>
     </React.Fragment>
   )

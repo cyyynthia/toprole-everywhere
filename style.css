@@ -81,3 +81,17 @@
   position: relative;
   top: -2px;
 }
+
+.repliedMessage-VokQwo .toprole-wrapper {
+  margin-top: -2px;
+  margin-left: -4px;
+  margin-right: 8px;
+}
+
+.repliedMessage-VokQwo .toprole-wrapper.tag {
+  margin-left: 0;
+}
+
+.repliedMessage-VokQwo .toprole-wrapper > div {
+  margin: 0;
+}
