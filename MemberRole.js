@@ -32,10 +32,6 @@ const { sleep } = require('powercord/util');
 module.exports = AsyncComponent.from((async () => {
   // Yes
   const userStore = await getModule([ 'getCurrentUser' ]);
-  while (!userStore.getCurrentUser()) {
-    await sleep(10);
-  }
-
   const functionalUserPopout = await getModuleByDisplayName('ConnectedUserPopout');
 
   // React Honks moment
@@ -69,10 +65,15 @@ module.exports = AsyncComponent.from((async () => {
     userRoles: [ '0' ]
   };
 
+  const ogGetCurrentUser = userStore.getCurrentUser
+  userStore.getCurrentUser = () => ({ id: '0' })
+
   const MemberRole = functionalUserPopout({ user: { isNonUserBot: () => void 0 } }).type
     .prototype.renderRoles.call({ props: fakeProps })[1].type(fakeProps).type
     .call(null, fakeProps).props.children.props.children({})
     .props.children[0].type;
+
+  userStore.getCurrentUser = ogGetCurrentUser
 
   // React Hooks moment
   owo.useMemo = ogUseMemo;
