@@ -48,7 +48,6 @@ module.exports = class TopRoles extends Plugin {
 
   pluginWillUnload () {
     uninject('tre-messages');
-    uninject('tre-replies');
     uninject('tre-members');
     uninject('tre-members-adjust');
     powercord.api.settings.unregisterSettings(this.entityID);
@@ -56,46 +55,26 @@ module.exports = class TopRoles extends Plugin {
 
   async injectChat () {
     const channels = await getModule([ 'getChannel' ]);
-    const MessageHeader = await getModule([ 'MessageTimestamp' ]);
-    const RepliedMessage = await getModule((m) => m.default?.displayName === 'RepliedMessage');
+    const d = (m) => {
+      const def = m.__powercordOriginal_default ?? m.default
+      return typeof def === 'function' ? def : null
+    }
 
-    inject('tre-messages', MessageHeader, 'default', ([ { message: { author: { id: userId }, channel_id: channelId } } ], res) => {
+    const MessageAuthorName = await getModule((m) => d(m)?.toString().includes('userOverride'))
+    inject('tre-messages', MessageAuthorName, 'default', ([ { message: { author: { id: userId }, channel_id: channelId } } ], res) => {
       if (!this.settings.get('messages', true) || !channelId) {
-        return res;
+        return res
       }
 
-      const header = findInReactTree(res, e => Array.isArray(e?.props?.children) && e.props.children.find(c => c?.props?.message));
-      const guildId = channels.getChannel(channelId).guild_id;
-      header.props.children.push(
-        React.createElement(TopRole, {
-          region: 'messages',
-          entityId: this.entityID,
-          guildId,
-          userId
-        })
-      );
+      res.props.children.splice(2, 0, React.createElement(TopRole, {
+        region: 'messages',
+        entityId: this.entityID,
+        guildId: channels.getChannel(channelId).guild_id,
+        userId
+      }))
 
-      return res;
-    });
-
-    inject('tre-replies', RepliedMessage, 'default', ([ { referencedMessage: { message } } ], res) => {
-      if (!this.settings.get('replies', true) || !message) {
-        return res;
-      }
-
-      res.props.children.unshift(
-        React.createElement(TopRole, {
-          region: 'replies',
-          entityId: this.entityID,
-          guildId: channels.getChannel(message.channel_id).guild_id,
-          userId: message.author.id
-        })
-      );
-
-      return res;
-    });
-
-    RepliedMessage.default.displayName = 'RepliedMessage';
+      return res
+    })
   }
 
   async injectMemberList () {
