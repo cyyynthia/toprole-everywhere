@@ -44,13 +44,8 @@ module.exports = AsyncComponent.from((async () => {
   const ogUseReducer = owo.useReducer;
   const ogUseRef = owo.useRef;
 
-  owo.useMemo = () => ({
-    length: 1,
-    getItemProps: () => void 0,
-    getContainerProps: () => void 0,
-    map: (fn) => fn({}, 0)
-  });
-  owo.useState = () => [ null, () => void 0 ];
+  owo.useMemo = (x) => x()
+  owo.useState = (x) => [ x, () => void 0 ];
   owo.useEffect = () => null;
   owo.useLayoutEffect = () => null;
   owo.useCallback = () => () => void 0;
@@ -71,7 +66,7 @@ module.exports = AsyncComponent.from((async () => {
   const MemberRole = functionalUserPopout({ user: { isNonUserBot: () => void 0 } }).type
     .prototype.renderRoles.call({ props: fakeProps })[1].type(fakeProps).type
     .call(null, fakeProps).props.children.props.children({})
-    .props.children[0].type;
+    .props.children[0][0].type;
 
   userStore.getCurrentUser = ogGetCurrentUser
 
