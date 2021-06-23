@@ -27,12 +27,12 @@
 
 const { React, getModule, getModuleByDisplayName } = require('powercord/webpack');
 const { AsyncComponent } = require('powercord/components');
-const { sleep } = require('powercord/util');
+const { findInReactTree } = require('powercord/util');
 
 module.exports = AsyncComponent.from((async () => {
   // Yes
   const userStore = await getModule([ 'getCurrentUser' ]);
-  const functionalUserPopout = await getModuleByDisplayName('ConnectedUserPopout');
+  const popoutBody = await getModuleByDisplayName('UserPopoutBody');
 
   // React Honks moment
   const owo = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher.current;
@@ -43,6 +43,7 @@ module.exports = AsyncComponent.from((async () => {
   const ogUseCallback = owo.useCallback;
   const ogUseReducer = owo.useReducer;
   const ogUseRef = owo.useRef;
+  const ogUseContext = owo.useContext;
 
   owo.useMemo = (x) => x()
   owo.useState = (x) => [ x, () => void 0 ];
@@ -51,24 +52,29 @@ module.exports = AsyncComponent.from((async () => {
   owo.useCallback = () => () => void 0;
   owo.useRef = () => ({});
   owo.useReducer = (_, a) => [ a, () => void 0 ];
+  owo.useContext = (ctx) => ctx._currentValue;
 
   // Render moment
   const fakeProps = {
     guildMember: { roles: [ '0' ] },
     guild: { roles: { 0: { id: '0' } } },
-    user: {},
+    user: { isNonUserBot: () => false },
     userRoles: [ '0' ]
   };
 
   const ogGetCurrentUser = userStore.getCurrentUser
   userStore.getCurrentUser = () => ({ id: '0' })
-
-  const MemberRole = functionalUserPopout({ user: { isNonUserBot: () => void 0 } }).type
-    .prototype.renderRoles.call({ props: fakeProps })[1].type(fakeProps).type
-    .call(null, fakeProps).props.children.props.children({})
-    .props.children[0][0].type;
-
-  userStore.getCurrentUser = ogGetCurrentUser
+  let MemberRole = () => null
+  try {
+    const body = popoutBody(fakeProps)
+    const bodyRoles = findInReactTree(body, (n) => n.key === 'roles')
+    const roles = bodyRoles.type(bodyRoles.props)
+    const wrapper = roles.type(roles.props)
+    const res = wrapper.props.children.type(wrapper.props.children.props)
+    MemberRole = res.props.children[0][0].type
+  } catch (e) { console.log(e) } finally {
+    userStore.getCurrentUser = ogGetCurrentUser
+  }
 
   // React Hooks moment
   owo.useMemo = ogUseMemo;
@@ -78,6 +84,7 @@ module.exports = AsyncComponent.from((async () => {
   owo.useCallback = ogUseCallback;
   owo.useReducer = ogUseReducer;
   owo.useRef = ogUseRef;
+  owo.useContext = ogUseContext;
 
   // Poggers moment
   return function (props) {
