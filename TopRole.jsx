@@ -82,11 +82,12 @@ module.exports = Flux.connectStoresAsync(
   ([ membersStore, guildsStore ], props) => {
     let role = null;
     const member = membersStore.getMember(props.guildId, props.userId);
+    const hoistedOnly = powercord.api.settings.store.getSetting(props.entityId, 'hoisted');
     if (member) {
       const guild = guildsStore.getGuild(props.guildId);
       const topRole = Object.entries(guild.roles)
         .sort(([ , a ], [ , b ]) => a.position < b.position ? 1 : a.position > b.position ? -1 : 0)
-        .find(([ id ]) => member.roles.includes(id));
+        .find(([ id, { hoist } ]) => (!hoistedOnly || hoist) && member.roles.includes(id));
 
       if (topRole) {
         // eslint-disable-next-line prefer-destructuring

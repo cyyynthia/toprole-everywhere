@@ -50,6 +50,13 @@ module.exports = React.memo(
         Display mode
       </RadioGroup>
       <SwitchItem
+        value={props.getSetting('hoisted')}
+        onChange={() => props.toggleSetting('hoisted')}
+        note='Show the top hoisted role instead of the absolute top role.'
+      >
+        Hoisted only
+      </SwitchItem>
+      <SwitchItem
         value={props.getSetting('messages', true)}
         onChange={() => props.toggleSetting('messages', true)}
         note='Whether the top role should be displayed in the chat or not.'
