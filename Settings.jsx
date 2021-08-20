@@ -64,6 +64,13 @@ module.exports = React.memo(
         Messages
       </SwitchItem>
       <SwitchItem
+        value={props.getSetting('messages', true)}
+        onChange={() => props.toggleSetting('messages', true)}
+        note='Whether the top role should be displayed in the chat or not.'
+      >
+        Messages
+      </SwitchItem>
+      <SwitchItem
         value={props.getSetting('members', true)}
         onChange={() => props.toggleSetting('members', true)}
         note='Whether the top role should be displayed in the members list or not.'

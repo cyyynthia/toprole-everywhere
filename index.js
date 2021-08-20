@@ -61,8 +61,12 @@ module.exports = class TopRoles extends Plugin {
     }
 
     const MessageAuthorName = await getModule((m) => d(m)?.toString().includes('userOverride'))
-    inject('tre-messages', MessageAuthorName, 'default', ([ { message: { author: { id: userId }, channel_id: channelId }, withMentionPrefix } ], res) => {
-      const setting = typeof withMentionPrefix === 'undefined' ? 'messages' : 'replies'
+    inject('tre-messages', MessageAuthorName, 'default', ([ { message: { author, channel_id: channelId }, userOverride, withMentionPrefix, renderPopout } ], res) => {
+      const setting = typeof withMentionPrefix === 'undefined'
+        ? renderPopout
+          ? 'messages'
+          : 'threads-preview'
+        : 'replies'
       if (!this.settings.get(setting, true) || !channelId) {
         return res
       }
@@ -71,7 +75,7 @@ module.exports = class TopRoles extends Plugin {
         region: 'messages',
         entityId: this.entityID,
         guildId: channels.getChannel(channelId).guild_id,
-        userId
+        userId: userOverride ? userOverride.id : author.id
       }))
 
       return res

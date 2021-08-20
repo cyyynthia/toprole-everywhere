@@ -94,3 +94,19 @@
 .repliedMessage-VokQwo .toprole-wrapper > div {
   margin: 0;
 }
+
+.threadMessageAccessory-1pYyA- .toprole-wrapper {
+  margin-right: 8px;
+}
+
+.threadMessageAccessory-1pYyA- .toprole-wrapper.tag {
+  margin-left: 0;
+}
+
+.threadMessageAccessory-1pYyA- .toprole-wrapper > div {
+  margin: 0;
+}
+
+.threadMessageAccessory-1pYyA- .toprole-wrapper + .badges {
+  margin-left: -6px;
+}
