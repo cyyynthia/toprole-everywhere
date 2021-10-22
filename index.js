@@ -54,7 +54,7 @@ module.exports = class TopRoles extends Plugin {
   }
 
   async injectChat () {
-    const channels = await getModule([ 'getChannel' ]);
+    const channels = await getModule([ 'getChannel', 'getDMFromUserId' ]);
     const d = (m) => {
       const def = m.__powercordOriginal_default ?? m.default
       return typeof def === 'function' ? def : null

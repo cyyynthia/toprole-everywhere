@@ -31,7 +31,7 @@ const { findInReactTree } = require('powercord/util');
 
 module.exports = AsyncComponent.from((async () => {
   // Yes
-  const userStore = await getModule([ 'getCurrentUser' ]);
+  const userStore = await getModule([ 'getCurrentUser', 'getUser' ]);
   const popoutBody = await getModuleByDisplayName('UserPopoutBody');
 
   // React Honks moment
