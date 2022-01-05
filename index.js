@@ -51,6 +51,7 @@ module.exports = class TopRoles extends Plugin {
     uninject('tre-members');
     uninject('tre-members-adjust');
     powercord.api.settings.unregisterSettings(this.entityID);
+    document.querySelectorAll('[id^="chat-messages-"] > div').forEach(e => require('powercord/util').getReactInstance(e).memoizedProps.onMouseMove());
   }
 
   async injectChat () {
@@ -80,6 +81,8 @@ module.exports = class TopRoles extends Plugin {
 
       return res
     })
+
+    document.querySelectorAll('[id^="chat-messages-"] > div').forEach(e => require('powercord/util').getReactInstance(e).memoizedProps.onMouseMove());
   }
 
   async injectMemberList () {

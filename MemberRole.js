@@ -29,6 +29,7 @@ const { React, getModule, getModuleByDisplayName } = require('powercord/webpack'
 const { AsyncComponent } = require('powercord/components');
 const { findInReactTree } = require('powercord/util');
 
+/*
 module.exports = AsyncComponent.from((async () => {
   // Yes
   const userStore = await getModule([ 'getCurrentUser', 'getUser' ]);
@@ -93,3 +94,21 @@ module.exports = AsyncComponent.from((async () => {
     return res
   };
 })());
+*/
+
+module.exports = (props) => {
+  return (
+    React.createElement(
+      'div',
+      { className: 'role-2irmRk flex-1O1GKY alignCenter-1dQNNs' },
+      React.createElement(
+        'div',
+        {
+          className: 'roleCircle-3xAZ1j flex-1O1GKY alignCenter-1dQNNs justifyCenter-3D2jYp desaturateUserColors-1gar-1',
+          style: { backgroundColor: props.role.colorString || '#b9bbbe' },
+        }
+      ),
+      React.createElement('div', { className: 'roleName-32vpEy' }, props.role.name)
+    )
+  )
+}
