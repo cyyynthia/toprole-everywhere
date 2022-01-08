@@ -100,15 +100,15 @@ module.exports = (props) => {
   return (
     React.createElement(
       'div',
-      { className: 'role-2irmRk flex-1O1GKY alignCenter-1dQNNs' },
+      { className: 'role-2TIOKu flex-3BkGQD alignCenter-14kD11' },
       React.createElement(
         'div',
         {
-          className: 'roleCircle-3xAZ1j flex-1O1GKY alignCenter-1dQNNs justifyCenter-3D2jYp desaturateUserColors-1gar-1',
+          className: 'roleCircle-1EgnFN flex-3BkGQD alignCenter-14kD11 justifyCenter-rrurWZ desaturateUserColors-1O-G89',
           style: { backgroundColor: props.role.colorString || '#b9bbbe' },
         }
       ),
-      React.createElement('div', { className: 'roleName-32vpEy' }, props.role.name)
+      React.createElement('div', { className: 'roleName-2ZJJYR' }, props.role.name)
     )
   )
 }

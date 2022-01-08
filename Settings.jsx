@@ -64,11 +64,18 @@ module.exports = React.memo(
         Messages
       </SwitchItem>
       <SwitchItem
-        value={props.getSetting('messages', true)}
-        onChange={() => props.toggleSetting('messages', true)}
-        note='Whether the top role should be displayed in the chat or not.'
+        value={props.getSetting('replies', true)}
+        onChange={() => props.toggleSetting('replies', true)}
+        note='Whether the top role should be displayed in the replied message reference or not.'
       >
-        Messages
+        Replies
+      </SwitchItem>
+      <SwitchItem
+        value={props.getSetting('threads-preview', true)}
+        onChange={() => props.toggleSetting('threads-preview', true)}
+        note='Whether the top role should be displayed in the thread preview or not.'
+      >
+        Threads previews
       </SwitchItem>
       <SwitchItem
         value={props.getSetting('members', true)}
@@ -76,13 +83,6 @@ module.exports = React.memo(
         note='Whether the top role should be displayed in the members list or not.'
       >
         Members
-      </SwitchItem>
-      <SwitchItem
-        value={props.getSetting('replies', true)}
-        onChange={() => props.toggleSetting('replies', true)}
-        note='Whether the top role should be displayed in the replied message reference or not.'
-      >
-        Replies
       </SwitchItem>
     </React.Fragment>
   )
